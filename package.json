@@ -1,0 +1,22 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "Product Processing Unit (PU1) - Flash Sale System",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon product-service/server.js",
+    "dev": "node server.js",
+    "seed:mongo": "node scripts/createSampleData.js",
+    "seed:redis": "node scripts/seedProduct.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ioredis": "^5.10.1",
+    "mongoose": "^9.6.1",
+    "dotenv": "^16.4.5",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
