@@ -6,7 +6,7 @@ const Redis = require("ioredis");
 
 // Redis
 const redis = new Redis({
-  host: "172.16.69.167", // sửa IP Redis
+  host: "172.16.71.225", // sửa IP Redis
   port: 6379,
 });
 
@@ -29,10 +29,12 @@ async function seedToRedis() {
 
     console.log(`Found ${products.length} products`);
 
+    await redis.del("products");
+
     const pipeline = redis.pipeline();
 
     // clear dữ liệu cũ
-    pipeline.del("products");
+    // pipeline.del("products");
 
     products.forEach((p) => {
       const productData = {
@@ -47,10 +49,7 @@ async function seedToRedis() {
       pipeline.rpush("products", productData.id);
 
       // object
-      pipeline.set(
-        `product:${productData.id}`,
-        JSON.stringify(productData)
-      );
+      pipeline.set(`product:${productData.id}`, JSON.stringify(productData));
 
       // stock riêng (quan trọng cho Inventory PU)
       pipeline.set(`stock:${productData.id}`, productData.stock);
@@ -59,6 +58,8 @@ async function seedToRedis() {
     await pipeline.exec();
 
     console.log("✅ Seeded to Redis successfully");
+    await redis.quit();
+    await mongoose.connection.close();
 
     process.exit(0);
   } catch (err) {

@@ -1,7 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 const productService = require("./productService");
 
 const app = express();
+
+// QUAN TRỌNG
+app.use(cors());
+app.use(express.json());
+
 const PORT = 8081;
 
 // GET /products
@@ -29,6 +35,6 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Product PU running at http://localhost:${PORT}`);
 });
